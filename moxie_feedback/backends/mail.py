@@ -15,12 +15,7 @@ class EmailBackend(object):
         self.email_subject = email_subject
 
     def feedback(self, message):
-
-        msg = MIMEText(message.text)
-
-        msg['Subject'] = self.email_subject
-        msg['From'] = self.sender_email
-        msg['To'] = self.send_to
+        msg = self._get_email(message)
 
         try:
             s = smtplib.SMTP(self.smtp_server)
@@ -31,3 +26,10 @@ class EmailBackend(object):
             return False
         else:
             return True
+
+    def _get_email(self, message):
+        msg = MIMEText(message.text)
+
+        msg['Subject'] = self.email_subject
+        msg['From'] = self.sender_email
+        msg['To'] = self.send_to
