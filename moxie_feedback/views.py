@@ -45,4 +45,6 @@ class Feedback(ServiceView):
             message.email = json['email']
         if 'referer' in json:
             message.referer = json['referer']
+        if 'device' in json:
+            message.device = json['device']
         return message

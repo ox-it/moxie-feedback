@@ -1,6 +1,5 @@
 import smtplib
 import logging
-from smtplib import SMTPException
 from email.mime.text import MIMEText
 
 logger = logging.getLogger(__file__)
@@ -45,9 +44,10 @@ class EmailBackend(object):
         return """Date:        {date}
 E-mail:      {email}
 User-agent:  {ua}
+Device:      {device}
 Referer:     {referer}
 
 {text}
         """.format(text=message.text, date=str(message.message_date),
                    email=message.email, ua=message.user_agent,
-                   referer=message.referer)
+                   referer=message.referer, device=message.device)
