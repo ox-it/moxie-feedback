@@ -22,15 +22,14 @@ class Feedback(ServiceView):
         if not message_json:
             raise BadRequest("You must pass a JSON document")
         message = self.json_to_message(message_json, user_agent)
-        service.send_feedback(message)
-        return True
+        return service.send_feedback(message)
 
     @accepts(JSON, HAL_JSON)
     def as_json(self, response):
         if response:
-            return jsonify({'status': 'success'})
+            return jsonify({'status': 'success'}), 200
         else:
-            return jsonify({'status': 'error'})
+            return jsonify({'status': 'error'}), 500
 
     def json_to_message(self, json, ua):
         """JSON object to Message object (domain)

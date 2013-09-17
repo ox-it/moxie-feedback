@@ -7,5 +7,8 @@ class FeedbackService(Service):
         self.backends = map(self._import_provider, backends.items())
 
     def send_feedback(self, message):
+        ok = True
         for backend in self.backends:
-            backend.feedback(message)
+            if not backend.feedback(message):
+                ok = False
+        return ok

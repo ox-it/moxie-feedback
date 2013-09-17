@@ -21,7 +21,7 @@ class EmailBackend(object):
             s = smtplib.SMTP(self.smtp_server)
             s.sendmail(self.sender_email, [self.send_to], msg.as_string())
             s.quit()
-        except SMTPException:
+        except:
             logger.error("Error when sending email", exc_info=True)
             return False
         else:
