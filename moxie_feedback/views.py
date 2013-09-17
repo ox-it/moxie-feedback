@@ -9,12 +9,14 @@ from moxie.core.representations import HAL_JSON, JSON
 
 from .services import FeedbackService
 from .domain import Message
+from .utils import ratelimit
 
 
 class Feedback(ServiceView):
 
     methods = ['POST']
 
+    @ratelimit(limit=5, per=60)
     def handle_request(self):
         service = FeedbackService.from_context()
         message_json = request.get_json(force=True, silent=True, cache=True)
@@ -27,7 +29,10 @@ class Feedback(ServiceView):
     @accepts(JSON, HAL_JSON)
     def as_json(self, response):
         if response:
-            return jsonify({'status': 'success'}), 200
+            if type(response) is tuple:
+                return response
+            else:
+                return jsonify({'status': 'success'}), 200
         else:
             return jsonify({'status': 'error'}), 500
 
