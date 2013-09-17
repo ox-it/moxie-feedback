@@ -28,8 +28,26 @@ class EmailBackend(object):
             return True
 
     def _get_email(self, message):
-        msg = MIMEText(message.text)
+        msg_text = self._get_email_text(message)
+        msg = MIMEText(msg_text)
 
         msg['Subject'] = self.email_subject
         msg['From'] = self.sender_email
         msg['To'] = self.send_to
+        return msg
+
+    def _get_email_text(self, message):
+        """
+        Prepare the text of the email message
+        :param message: Message domain object
+        :return: string with message
+        """
+        return """Date:        {date}
+E-mail:      {email}
+User-agent:  {ua}
+Referer:     {referer}
+
+{text}
+        """.format(text=message.text, date=str(message.message_date),
+                   email=message.email, ua=message.user_agent,
+                   referer=message.referer)
