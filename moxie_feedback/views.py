@@ -13,7 +13,8 @@ from .domain import Message
 
 class Feedback(ServiceView):
 
-    methods = ['POST']
+    methods = ['OPTIONS', 'POST']
+    cors_allow_headers = ['Content-Type']
 
     def handle_request(self):
         service = FeedbackService.from_context()
