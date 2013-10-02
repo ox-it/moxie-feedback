@@ -14,7 +14,8 @@ from .utils import ratelimit
 
 class Feedback(ServiceView):
 
-    methods = ['POST']
+    methods = ['OPTIONS', 'POST']
+    cors_allow_headers = ['Content-Type']
 
     @ratelimit(limit=5, per=60)
     def handle_request(self):
@@ -49,4 +50,6 @@ class Feedback(ServiceView):
             message.email = json['email']
         if 'referer' in json:
             message.referer = json['referer']
+        if 'device' in json:
+            message.device = json['device']
         return message

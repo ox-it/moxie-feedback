@@ -1,5 +1,5 @@
 class Message(object):
-    def __init__(self, text, user_agent, message_date, email=None, referer=None):
+    def __init__(self, text, user_agent, message_date, email=None, referer=None, device=None):
         """Message
         :param text: text of the message
         :param user_agent: User-Agent from the query
@@ -12,6 +12,7 @@ class Message(object):
         self.message_date = message_date
         self.email = email
         self.referer = referer
+        self.device = device
 
     text = None
 
@@ -22,3 +23,5 @@ class Message(object):
     email = None
 
     referer = None
+
+    device = None

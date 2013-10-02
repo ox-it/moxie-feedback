@@ -1,6 +1,5 @@
 import smtplib
 import logging
-from smtplib import SMTPException
 from email.mime.text import MIMEText
 
 logger = logging.getLogger(__file__)
@@ -19,7 +18,7 @@ class EmailBackend(object):
 
         try:
             s = smtplib.SMTP(self.smtp_server)
-            s.sendmail(self.sender_email, [self.send_to], msg.as_string())
+            s.sendmail(self.sender_email, self.send_to, msg.as_string())
             s.quit()
         except:
             logger.error("Error when sending email", exc_info=True)
@@ -33,7 +32,7 @@ class EmailBackend(object):
 
         msg['Subject'] = self.email_subject
         msg['From'] = self.sender_email
-        msg['To'] = self.send_to
+        msg['To'] = ", ".join(self.send_to)
         return msg
 
     def _get_email_text(self, message):
@@ -45,9 +44,10 @@ class EmailBackend(object):
         return """Date:        {date}
 E-mail:      {email}
 User-agent:  {ua}
+Device:      {device}
 Referer:     {referer}
 
 {text}
         """.format(text=message.text, date=str(message.message_date),
                    email=message.email, ua=message.user_agent,
-                   referer=message.referer)
+                   referer=message.referer, device=message.device)
