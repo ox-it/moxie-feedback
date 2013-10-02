@@ -34,3 +34,5 @@ Example of configuration
                 smtp_server: 'smtp.server'
                 sender_email: 'noreply@moxie.com'
                 send_to: ['employee1@my.company.com', 'employee2@my.company.com']
+        KVService:
+            backend_uri: 'redis://localhost:6379/3'
